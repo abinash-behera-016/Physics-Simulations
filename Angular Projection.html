@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Angular Projectile Motion</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Barlow:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
+    <script src="Angular Projection.js"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async
+          src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body {
+            font-family: 'Barlow', sans-serif;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            font-family: 'Playfair Display', serif;
+            text-align: center;
+            margin: 20px 0;
+        }
+        button {
+            background-color: #0cf3aa;
+            color: #005344;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        input {
+            padding: 8px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            margin: 5px;
+        }
+        p {
+            font-family: 'Barlow', sans-serif;
+            font-size: 18px;
+            text-align: justify;
+            margin: 0 20px;
+        }
+        .input-container {
+            margin-left: 24px; /* Move the container 20px to the right */
+        }
+    </style>
+</head>
+<body>
+    <h1>Projectile Motion with Angular Projection</h1>
+    <div id="simulation" style="margin-bottom: 20px;"></div>
+    <div class="input-container">
+        <label for="initialSpeed">Initial Speed (m/s):</label>
+        <input type="number" id="initialSpeed" value="100">
+        <label for="theta">Angle (degrees):</label>
+        <input type="number" id="theta" value="45">
+        <label for="gravity">Gravity (m/s²):</label>
+        <input type="number" id="gravity" value="9.81">
+        <label for="Speed">Simulation Speed:</label>
+        <input type="number" id="Speed" value="1" step="0.1">
+        <button onclick="resetSimulation()">Simulate</button>
+        <button onclick="togglePause()">Pause/Resume</button>
+    <p style="line-height: 1.5;">
+    Below you can input any x co-ordinate value on the projectile and calculate corresponding values of y, vₓ, vᵧ and v. The y co-ordinate value shown is the height above the ground.
+    </p>
+    </div>
+        <div class="input-container">
+        <label for="x">x (m):</label>
+        <input type="number" id="x">
+        <button onclick="calculate()">Calculate</button>
+        <label for="y">y (m):</label>
+        <input type="number" id="y" readonly>
+        <label for="vx">vₓ (m/s):</label>
+        <input type="number" id="vx" readonly>
+        <label for="vy">vᵧ (m/s):</label>
+        <input type="number" id="vy" readonly>
+        <label for="v">v:</label>
+        <input type="number" id="v" readonly>
+    </div>
+    <p style="line-height: 1.5;">
+    In case of Angular projectile motion, the object is projected with some initial speed 'u' making an angle '\(\theta\)' with the horizontal. The initial velocity 'u' can be split into two components, <br>
+    (i) The horizontal component \(u \cos(\theta)\) which stays constant throughout the motion <br>
+    (ii) The vertical component \(u \sin(\theta)\) which changes under the effect of acceleration due to gravity 'g' <br>
+    The general equation of motion is given by, \( y = x \tan(\theta) - \frac{g}{2u^2 \cos^2(\theta)} x^2 \) <br>
+    Since, this is a quadratic function, the trajectory (path) of the projectile is a parabola. <br>
+    You can play around with different values of initial speed (u) and angle of projection (\(\theta\)) to see the trajectory under different supplied values. <br>
+    The standard value of 'g' is set to 9.81 m/s². You can put your desired values to simulate the motion on different planets i.e, 3.7 m/s² for Mars, 24.5 m/s² for Jupiter etc. <br> 
+    </p>
+    <script>
+    function calculate() {
+        console.log("Calculate function called"); // Debugging statement
+
+        const x = parseFloat(document.getElementById('x').value);
+        console.log("x:", x); // Debugging statement
+
+        const theta = parseFloat(document.getElementById('theta').value);
+        console.log("theta:", theta); // Debugging statement
+
+        const u = parseFloat(document.getElementById('initialSpeed').value);
+        console.log("u:", u); // Debugging statement
+
+        const g = parseFloat(document.getElementById('gravity').value);
+        console.log("g:", g); // Debugging statement
+
+        const y = x * Math.tan(theta * (Math.PI / 180)) - (g / (2 * Math.pow(u * Math.cos(theta * (Math.PI / 180)), 2))) * Math.pow(x, 2);
+        console.log("y:", y); // Debugging statement
+
+        const vx = u * Math.cos(theta * (Math.PI / 180));
+        console.log("vx:", vx); // Debugging statement
+
+        const vy = - u * Math.sin(theta * (Math.PI / 180)) + (g * x) / (u * Math.cos(theta * (Math.PI / 180)));
+        console.log("vy:", vy); // Debugging statement
+
+        const v = Math.sqrt(Math.pow(vx, 2) + Math.pow(vy, 2));
+        console.log("v:", v); // Debugging statement
+
+        // Round off values to two decimal places
+        document.getElementById('y').value = y.toFixed(2);
+        document.getElementById('vx').value = vx.toFixed(2);
+        document.getElementById('vy').value = vy.toFixed(2);
+        document.getElementById('v').value = v.toFixed(2);
+    }
+    </script>
+
+</body>
+</html>
